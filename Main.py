@@ -5,13 +5,26 @@ wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
 
-VERSION = '0.02'
-EDITDATE = '6/25/2024'
+VERSION = '0.03'
+EDITDATE = '6/27/2024'
 numberCheck = tk.IntVar()
 letterCheck = tk.IntVar()
 letterCheck2 = tk.IntVar()
 specialCheck = tk.IntVar()
 spaceCheck = tk.IntVar()
+numberCheck.set(1)
+letterCheck.set(1)
+letterCheck2.set(1)
+specialCheck.set(1)
+spaceCheck.set(0)
+clicked = tk.StringVar()
+clicked.set('15')
+
+options = []
+temp = 50
+while temp > 0:
+    options.append(str(temp))
+    temp -= 1
 
 wordFrame.grid(row=0, column=0)
 wordControlFrame.grid(row=1, column=0)
@@ -28,35 +41,39 @@ clipButton = tk.Button(wordControlFrame, text='Copy', command=lambda: ...)
 clipButton.grid(row=0, column=1)
 
 # settings frame
+lengthOption = tk.OptionMenu(settingsFrame, clicked, *options)
+lengthOption.grid(row=0, column=1)
+lengthLabel = tk.Label(settingsFrame, text='Length')
+lengthLabel.grid(row=0, column=0)
 numberButton = tk.Checkbutton(settingsFrame, text='Numbers',
                               variable=numberCheck,
                               onvalue=1,
                               offvalue=0)
-numberButton.pack()
+numberButton.grid(row=1, column=0)
 letterButton = tk.Checkbutton(settingsFrame, text='Letters (Lower)',
                               variable=letterCheck,
                               onvalue=1,
                               offvalue=0,
                               padx=3)
-letterButton.pack()
+letterButton.grid(row=2, column=0)
 letterButton2 = tk.Checkbutton(settingsFrame, text='Letters (Upper)',
                                variable=letterCheck2,
                                onvalue=1,
                                offvalue=0,
                                padx=3)
-letterButton2.pack()
+letterButton2.grid(row=3, column=0)
 specialButton = tk.Checkbutton(settingsFrame, text='Special Characters',
                                variable=specialCheck,
                                onvalue=1,
                                offvalue=2,
                                padx=7)
-specialButton.pack()
+specialButton.grid(row=4, column=0)
 spaceButton = tk.Checkbutton(settingsFrame, text='space',
                              variable=spaceCheck,
                              onvalue=1,
                              offvalue=2,
                              padx=3)
-spaceButton.pack()
+spaceButton.grid(row=5, column=0)
 
 with open('words.txt', 'r') as file:
     Words = file.readlines()
