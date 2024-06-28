@@ -5,8 +5,8 @@ wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
 
-VERSION = '0.03'
-EDITDATE = '6/27/2024'
+VERSION = '0.04'
+EDITDATE = '6/28/2024'
 numberCheck = tk.IntVar()
 letterCheck = tk.IntVar()
 letterCheck2 = tk.IntVar()
@@ -19,10 +19,11 @@ specialCheck.set(1)
 spaceCheck.set(0)
 clicked = tk.StringVar()
 clicked.set('15')
+lowestMinLength = 5
 
 options = []
 temp = 50
-while temp > 0:
+while temp >= lowestMinLength:
     options.append(str(temp))
     temp -= 1
 

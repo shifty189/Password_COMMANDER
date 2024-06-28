@@ -1,5 +1,5 @@
-VERSION = '0.03'
-EDITDATE = '6/27/2024'
+VERSION = '0.04'
+EDITDATE = '6/28/2024'
 
 class PasswordConfig:
     def __init__(self, length=15, num=True, let=True, LET=True, spec=True, space=True, easy=False):
