@@ -17,13 +17,12 @@ if os.path.exists(docs):
         os.makedirs(f'{docs}\\Templates')
 else:
     os.makedirs(docs)
-    cfgfile = open(f'{docs}\\default.cfg', 'ab')
-    pickle.dump(settingsCFG, cfgfile)
-    cfgfile.close()
+    # cfgfile = open(f'{docs}\\default.cfg', 'ab')
+    with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
+        pickle.dump(settingsCFG, cfgfile)
+    # cfgfile.close()
     firstTime = True
-    if os.path.exists(f'{docs}\\Templates'):
-        ...
-    else:
+    if not os.path.exists(f'{docs}\\Templates'):
         os.makedirs(f'{docs}\\Templates')
 
 Main = tk.Tk()
@@ -33,8 +32,6 @@ settingsFrame = tk.Frame(Main)
 
 VERSION = '0.04'
 EDITDATE = '6/28/2024'
-VERSION = '0.03'
-EDITDATE = '6/26/2024'
 numberCheck = tk.IntVar()
 letterCheck = tk.IntVar()
 letterCheck2 = tk.IntVar()
@@ -107,8 +104,12 @@ spaceButton = tk.Checkbutton(settingsFrame, text='space',
                              padx=3)
 spaceButton.pack()
 
-with open('words.txt', 'r') as file:
-    Words = file.readlines()
+# with open('words.txt', 'r') as file:
+#     Words = file.readlines()
+Words = []
+temp = 5
+while temp > 0:
+    Words.append(settingsCFG.generatePassword())
 for i, word in enumerate(Words):
     wordsText.insert(f'{i}.0', word)
 
