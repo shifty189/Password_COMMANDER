@@ -4,7 +4,7 @@ import os
 import pickle
 
 settingsCFG = PasswordConfig()
-docs = f'{os.path.expanduser('~')}\\Documents\\PasswordCommander'
+docs = f'{os.path.expanduser("~")}\\Documents\\PasswordCommander'
 firstTime = True
 if os.path.exists(docs):
     cfgfile = open(f'{docs}\\default.cfg', 'rb')
@@ -31,19 +31,15 @@ wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
 
-<<<<<<< HEAD
 VERSION = '0.04'
 EDITDATE = '6/28/2024'
-=======
 VERSION = '0.03'
 EDITDATE = '6/26/2024'
->>>>>>> 460f12c6ee2d43a0b9fe8ca93b358d3a60ce0e1a
 numberCheck = tk.IntVar()
 letterCheck = tk.IntVar()
 letterCheck2 = tk.IntVar()
 specialCheck = tk.IntVar()
 spaceCheck = tk.IntVar()
-<<<<<<< HEAD
 numberCheck.set(1)
 letterCheck.set(1)
 letterCheck2.set(1)
@@ -58,7 +54,6 @@ temp = 50
 while temp >= lowestMinLength:
     options.append(str(temp))
     temp -= 1
-=======
 
 numberCheck.set(settingsCFG.number)
 letterCheck.set(settingsCFG.letter)
@@ -66,7 +61,6 @@ letterCheck2.set(settingsCFG.LETTER)
 specialCheck.set(settingsCFG.special)
 spaceCheck.set(settingsCFG.space)
 
->>>>>>> 460f12c6ee2d43a0b9fe8ca93b358d3a60ce0e1a
 
 wordFrame.grid(row=0, column=0)
 wordControlFrame.grid(row=1, column=0)
