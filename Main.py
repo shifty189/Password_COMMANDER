@@ -2,13 +2,18 @@ import tkinter as tk
 from Class import *
 import os
 import pickle
+import messagebox
 
+
+VERSION = '0.07'
+EDITDATE = '6/30/2024'
 
 def saveConfig(number, letter, up, speciel, Wspace, Easy):
     global docs
     newConfig = PasswordConfig(num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
     with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
         pickle.dump(newConfig, cfgfile)
+    messagebox.showinfo(title='saved', message='config saved')
 
 
 # settingsCFG = PasswordConfig()
@@ -20,8 +25,9 @@ if os.path.exists(docs):
         settingsCFG = pickle.load(cfgfile)
     except FileNotFoundError:
         settingsCFG = PasswordConfig()
-        with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
-            pickle.dump(settingsCFG, cfgfile)
+        cfgfile = open(f'{docs}\\default.cfg', 'ab')
+        # with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
+        pickle.dump(settingsCFG, cfgfile)
 
     cfgfile.close()
     firstTime = False
@@ -41,8 +47,7 @@ wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
 
-VERSION = '0.06'
-EDITDATE = '6/29/2024'
+
 numberCheck = tk.IntVar()
 letterCheck = tk.IntVar()
 letterCheck2 = tk.IntVar()
