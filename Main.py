@@ -3,27 +3,33 @@ from Class import *
 import os
 import pickle
 
-def saveConfig(num, let, upper, spec, space, easy):
+
+def saveConfig(number, letter, up, speciel, Wspace, Easy):
     global docs
-    newConfig = PasswordConfig(num, let=let, spec=spec, space=space, easy=easy)
-    print(newConfig.easypassword)
-    cfgfile = open(f'{docs}\\default.cfg', 'wb')
-    pickle.dump(newConfig, cfgfile)
-    cfgfile.close()
+    newConfig = PasswordConfig(num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
+    with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
+        pickle.dump(newConfig, cfgfile)
 
 
-settingsCFG = PasswordConfig()
+# settingsCFG = PasswordConfig()
 docs = f'{os.path.expanduser("~")}\\Documents\\PasswordCommander'
 firstTime = True
 if os.path.exists(docs):
-    cfgfile = open(f'{docs}\\default.cfg', 'rb')
-    settingsCFG = pickle.load(cfgfile)
+    try:
+        cfgfile = open(f'{docs}\\default.cfg', 'rb')
+        settingsCFG = pickle.load(cfgfile)
+    except FileNotFoundError:
+        settingsCFG = PasswordConfig()
+        with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
+            pickle.dump(settingsCFG, cfgfile)
+
     cfgfile.close()
     firstTime = False
     if not os.path.exists(f'{docs}\\Templates'):
         os.makedirs(f'{docs}\\Templates')
 else:
     os.makedirs(docs)
+    settingsCFG = PasswordConfig()
     with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
         pickle.dump(settingsCFG, cfgfile)
     firstTime = True
@@ -35,7 +41,7 @@ wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
 
-VERSION = '0.05'
+VERSION = '0.06'
 EDITDATE = '6/29/2024'
 numberCheck = tk.IntVar()
 letterCheck = tk.IntVar()
@@ -80,6 +86,10 @@ clipButton = tk.Button(wordControlFrame, text='Copy', command=lambda: ...)
 clipButton.grid(row=0, column=1)
 
 # settings frame
+lengthVar = tk.StringVar()
+lengthVar.set(str(settingsCFG.length))
+lengthSelect = tk.OptionMenu(settingsFrame, lengthVar, *options)
+lengthSelect.pack()
 easyButton = tk.Checkbutton(settingsFrame, text='Easy',
                             variable=easyCheck,
                             onvalue=1,

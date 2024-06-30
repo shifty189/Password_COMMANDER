@@ -1,6 +1,6 @@
 import random
 
-VERSION = '0.05'
+VERSION = '0.06'
 EDITDATE = '6/29/2024'
 
 
@@ -16,7 +16,6 @@ class PasswordConfig:
         self.speciallist = ['!', '@', '#', '$', '%', '^', '&', '*', '+']
         self.letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
                         't', 'u', 'v', 'w', 'x', 'y', 'z']
-
 
     def generatePassword(self):
         password = ''
