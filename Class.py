@@ -1,7 +1,7 @@
 import random
 
-VERSION = '0.06'
-EDITDATE = '6/29/2024'
+VERSION = '0.07'
+EDITDATE = '6/30/2024'
 
 
 class PasswordConfig:
