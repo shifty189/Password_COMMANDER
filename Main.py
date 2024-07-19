@@ -4,14 +4,13 @@ import os
 import pickle
 
 
-def saveConfig(number, letter, up, speciel, Wspace, Easy):
+def saveConfig(Length, number, letter, up, speciel, Wspace, Easy):
     global docs
-    newConfig = PasswordConfig(num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
-    with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
-        pickle.dump(newConfig, cfgfile)
+    newConfig = PasswordConfig(length=Length, num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
+    with open(f'{docs}\\default.cfg', 'wb') as CFGfile:
+        pickle.dump(newConfig, CFGfile)
 
 
-# settingsCFG = PasswordConfig()
 docs = f'{os.path.expanduser("~")}\\Documents\\PasswordCommander'
 firstTime = True
 if os.path.exists(docs):
@@ -20,8 +19,8 @@ if os.path.exists(docs):
         settingsCFG = pickle.load(cfgfile)
     except FileNotFoundError:
         settingsCFG = PasswordConfig()
-        with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
-            pickle.dump(settingsCFG, cfgfile)
+        with open(f'{docs}\\default.cfg', 'ab') as CFGfile:
+            pickle.dump(settingsCFG, CFGfile)
 
     cfgfile.close()
     firstTime = False
@@ -30,8 +29,8 @@ if os.path.exists(docs):
 else:
     os.makedirs(docs)
     settingsCFG = PasswordConfig()
-    with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
-        pickle.dump(settingsCFG, cfgfile)
+    with open(f'{docs}\\default.cfg', 'ab') as CFGfile:
+        pickle.dump(settingsCFG, CFGfile)
     firstTime = True
     if not os.path.exists(f'{docs}\\Templates'):
         os.makedirs(f'{docs}\\Templates')
@@ -41,8 +40,8 @@ wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
 
-VERSION = '0.06'
-EDITDATE = '6/29/2024'
+VERSION = '0.07'
+EDITDATE = '7/19/2024'
 numberCheck = tk.IntVar()
 letterCheck = tk.IntVar()
 letterCheck2 = tk.IntVar()
@@ -70,7 +69,6 @@ letterCheck2.set(settingsCFG.upper)
 specialCheck.set(settingsCFG.special)
 spaceCheck.set(settingsCFG.space)
 
-
 wordFrame.grid(row=0, column=0)
 wordControlFrame.grid(row=1, column=0)
 settingsFrame.grid(row=0, column=1)
@@ -90,44 +88,58 @@ lengthVar = tk.StringVar()
 lengthVar.set(str(settingsCFG.length))
 lengthSelect = tk.OptionMenu(settingsFrame, lengthVar, *options)
 lengthSelect.pack()
-easyButton = tk.Checkbutton(settingsFrame, text='Easy',
+easyButton = tk.Checkbutton(settingsFrame,
+                            text='Easy',
                             variable=easyCheck,
                             onvalue=1,
-                            offvalue=0)
+                            offvalue=0
+                            )
 easyButton.pack()
-numberButton = tk.Checkbutton(settingsFrame, text='Numbers',
+numberButton = tk.Checkbutton(settingsFrame,
+                              text='Numbers',
                               variable=numberCheck,
                               onvalue=1,
-                              offvalue=0)
+                              offvalue=0
+                              )
 numberButton.pack()
-letterButton = tk.Checkbutton(settingsFrame, text='Letters (Lower)',
+letterButton = tk.Checkbutton(settingsFrame,
+                              text='Letters (Lower)',
                               variable=letterCheck,
                               onvalue=1,
                               offvalue=0,
                               padx=3)
 letterButton.pack()
-letterButton2 = tk.Checkbutton(settingsFrame, text='Letters (Upper)',
+letterButton2 = tk.Checkbutton(settingsFrame,
+                               text='Letters (Upper)',
                                variable=letterCheck2,
                                onvalue=1,
                                offvalue=0,
                                padx=3)
 letterButton2.pack()
-specialButton = tk.Checkbutton(settingsFrame, text='Special Characters',
+specialButton = tk.Checkbutton(settingsFrame,
+                               text='Special Characters',
                                variable=specialCheck,
                                onvalue=1,
                                offvalue=2,
                                padx=7)
 specialButton.pack()
-spaceButton = tk.Checkbutton(settingsFrame, text='space',
+spaceButton = tk.Checkbutton(settingsFrame,
+                             text='space',
                              variable=spaceCheck,
                              onvalue=1,
                              offvalue=2,
                              padx=3)
 spaceButton.pack()
-print(spaceCheck.get())
-saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(numberCheck.get(), letterCheck.get(),
-                                                                              letterCheck2.get(), specialCheck.get(),
-                                                                              spaceCheck.get(), easyCheck.get()))
+print(lengthVar.get())
+saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(int(lengthVar.get()),
+                                                                              easyCheck.get(),
+                                                                              numberCheck.get(),
+                                                                              letterCheck.get(),
+                                                                              letterCheck2.get(),
+                                                                              specialCheck.get(),
+                                                                              spaceCheck.get()
+                                                                              )
+                       )
 saveButton.pack()
 
 Words = []
