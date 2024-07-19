@@ -1,7 +1,7 @@
 import random
 
-VERSION = '0.06'
-EDITDATE = '6/29/2024'
+VERSION = '0.07'
+EDITDATE = '7/19/2024'
 
 
 class PasswordConfig:
@@ -50,5 +50,4 @@ class PasswordConfig:
             with open('words.txt', 'r') as file:
                 dicWords = file.readlines()
                 password = random.choice(dicWords)
-            # print('testing')
         return password
