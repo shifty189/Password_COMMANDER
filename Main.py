@@ -5,12 +5,12 @@ import pickle
 import messagebox
 
 
-VERSION = '0.07'
-EDITDATE = '6/30/2024'
+VERSION = '0.08'
+EDITDATE = '8/4/2024'
 
-def saveConfig(number, letter, up, speciel, Wspace, Easy):
+def saveConfig(len, number, letter, up, speciel, Wspace, Easy):
     global docs
-    newConfig = PasswordConfig(num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
+    newConfig = PasswordConfig(len=len, num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
     with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
         pickle.dump(newConfig, cfgfile)
     messagebox.showinfo(title='saved', message='config saved')
@@ -130,9 +130,12 @@ spaceButton = tk.Checkbutton(settingsFrame, text='space',
                              padx=3)
 spaceButton.pack()
 print(spaceCheck.get())
-saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(numberCheck.get(), letterCheck.get(),
-                                                                              letterCheck2.get(), specialCheck.get(),
-                                                                              spaceCheck.get(), easyCheck.get()))
+saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(lengthVar.get(), numberCheck.get(),
+                                                                              letterCheck.get(), letterCheck2.get(),
+                                                                              specialCheck.get(), spaceCheck.get(),
+                                                                              easyCheck.get()
+                                                                              )
+                       )
 saveButton.pack()
 
 Words = []
