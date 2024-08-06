@@ -1,30 +1,49 @@
 import tkinter as tk
-from Class import *
+
+import Class
 import os
 import pickle
 import messagebox
 
 
-VERSION = '0.08'
-EDITDATE = '8/4/2024'
+VERSION = '0.09'
+EDITDATE = '8/6/2024'
+minimumClassVersion = '0.09'
 
-def saveConfig(len, number, letter, up, speciel, Wspace, Easy):
+# Class version check
+if float(minimumClassVersion) > float(Class.VERSION):
+    raise ValueError('Class file version is to old, update Class.py')
+
+
+def saveConfig(lenT, number, letter, up, speciel, Wspace, Easy):
     global docs
-    newConfig = PasswordConfig(len=len, num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
-    with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
+    newConfig = Class.PasswordConfig(len=lenT, num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
+    with open(f'{docs}\\default.cfg', 'wb') as cfgfile:
         pickle.dump(newConfig, cfgfile)
     messagebox.showinfo(title='saved', message='config saved')
 
 
-# settingsCFG = PasswordConfig()
+def getWords(config):
+    global wordsText
+    wordsText.delete('1.0', tk.END)
+    Words = []
+    temp = 5
+    while temp > -1:
+        Words.append(config.generatePassword())
+        temp -= 1
+    for i, word in enumerate(Words):
+        wordsText.insert(f'{i}.4', word + "\n")
+
+
 docs = f'{os.path.expanduser("~")}\\Documents\\PasswordCommander'
 firstTime = True
 if os.path.exists(docs):
+    firstTime = False
     try:
         cfgfile = open(f'{docs}\\default.cfg', 'rb')
         settingsCFG = pickle.load(cfgfile)
     except FileNotFoundError:
-        settingsCFG = PasswordConfig()
+        settingsCFG = Class.PasswordConfig()
         cfgfile = open(f'{docs}\\default.cfg', 'ab')
         # with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
         pickle.dump(settingsCFG, cfgfile)
@@ -35,7 +54,7 @@ if os.path.exists(docs):
         os.makedirs(f'{docs}\\Templates')
 else:
     os.makedirs(docs)
-    settingsCFG = PasswordConfig()
+    settingsCFG = Class.PasswordConfig()
     with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
         pickle.dump(settingsCFG, cfgfile)
     firstTime = True
@@ -59,8 +78,6 @@ letterCheck.set(1)
 letterCheck2.set(1)
 specialCheck.set(1)
 spaceCheck.set(0)
-clicked = tk.StringVar()
-clicked.set('15')
 lowestMinLength = 5
 
 options = []
@@ -85,14 +102,16 @@ wordsText = tk.Text(wordFrame, height=10, width=20)
 wordsText.pack()
 
 # control frame for buttons
-newButton = tk.Button(wordControlFrame, text='New', command=lambda: ...)
-newButton.grid(row=0, column=0)
-clipButton = tk.Button(wordControlFrame, text='Copy', command=lambda: ...)
-clipButton.grid(row=0, column=1)
+# newButton = tk.Button(wordControlFrame, text='New', command=lambda: ...)
+# newButton.grid(row=0, column=0)
+# clipButton = tk.Button(wordControlFrame, text='Copy', command=lambda: ...)
+# clipButton.grid(row=0, column=1)
+moreWordsButton = tk.Button(wordControlFrame, text='New Words', command=lambda: getWords(settingsCFG))
+moreWordsButton.grid(row=1, column=0)
 
 # settings frame
 lengthVar = tk.StringVar()
-lengthVar.set(str(settingsCFG.length))
+lengthVar.set(settingsCFG.length)
 lengthSelect = tk.OptionMenu(settingsFrame, lengthVar, *options)
 lengthSelect.pack()
 easyButton = tk.Checkbutton(settingsFrame, text='Easy',
@@ -129,7 +148,7 @@ spaceButton = tk.Checkbutton(settingsFrame, text='space',
                              offvalue=2,
                              padx=3)
 spaceButton.pack()
-print(spaceCheck.get())
+# print(spaceCheck.get())
 saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(lengthVar.get(), numberCheck.get(),
                                                                               letterCheck.get(), letterCheck2.get(),
                                                                               specialCheck.get(), spaceCheck.get(),
@@ -138,12 +157,13 @@ saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(le
                        )
 saveButton.pack()
 
-Words = []
-temp = 5
-while temp > 0:
-    Words.append(settingsCFG.generatePassword())
-    temp -= 1
-for i, word in enumerate(Words):
-    wordsText.insert(f'{i}.4', word + "\n")
+getWords(settingsCFG)
+# Words = []
+# temp = 5
+# while temp > 0:
+#     Words.append(settingsCFG.generatePassword())
+#     temp -= 1
+# for i, word in enumerate(Words):
+#     wordsText.insert(f'{i}.4', word + "\n")
 
 tk.mainloop()
