@@ -1,7 +1,7 @@
 import random
 
-VERSION = '0.08'
-EDITDATE = '8/4/2024'
+VERSION = '0.09'
+EDITDATE = '8/6/2024'
 
 
 class PasswordConfig:
@@ -19,6 +19,7 @@ class PasswordConfig:
 
     def generatePassword(self):
         password = ''
+        tempLength = int(self.length)
         if not self.easypassword:
             options = []
             if self.number:
@@ -31,7 +32,7 @@ class PasswordConfig:
                 options.append('special')
             if self.space:
                 options.append('space')
-            tempLength = self.length
+            tempLength = int(self.length)
             while tempLength > 0:
                 pick = random.choice(options)
                 if pick == 'number':
@@ -50,5 +51,12 @@ class PasswordConfig:
             with open('words.txt', 'r') as file:
                 dicWords = file.readlines()
                 password = random.choice(dicWords)
-            # print('testing')
+        tempLength = len(password) - 1
+        newPassword = ""
+        for i, p in enumerate(password):
+            if i == tempLength:
+                newPassword + p.upper()
+            else:
+                newPassword = newPassword + p
+            password = newPassword
         return password
