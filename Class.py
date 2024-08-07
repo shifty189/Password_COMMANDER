@@ -1,7 +1,7 @@
 import random
 
-VERSION = '0.09'
-EDITDATE = '8/6/2024'
+VERSION = '0.10'
+EDITDATE = '8/7/2024'
 
 
 class PasswordConfig:
@@ -51,7 +51,7 @@ class PasswordConfig:
             with open('words.txt', 'r') as file:
                 dicWords = file.readlines()
                 password = random.choice(dicWords)
-        tempLength = len(password) - 1
+        # tempLength = len(password) - 1
         newPassword = ""
         for i, p in enumerate(password):
             if i == tempLength:
