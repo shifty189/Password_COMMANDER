@@ -6,9 +6,9 @@ import pickle
 import messagebox
 
 
-VERSION = '0.09'
-EDITDATE = '8/6/2024'
-minimumClassVersion = '0.09'
+VERSION = '0.10'
+EDITDATE = '8/7/2024'
+minimumClassVersion = '0.10'
 
 # Class version check
 if float(minimumClassVersion) > float(Class.VERSION):
@@ -43,10 +43,10 @@ if os.path.exists(docs):
         cfgfile = open(f'{docs}\\default.cfg', 'rb')
         settingsCFG = pickle.load(cfgfile)
     except FileNotFoundError:
-        settingsCFG = Class.PasswordConfig()
-        cfgfile = open(f'{docs}\\default.cfg', 'ab')
-        # with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
-        pickle.dump(settingsCFG, cfgfile)
+        print('loading file error')
+        # settingsCFG = Class.PasswordConfig()
+        # cfgfile = open(f'{docs}\\default.cfg', 'ab')
+        # pickle.dump(settingsCFG, cfgfile)
 
     cfgfile.close()
     firstTime = False
@@ -73,6 +73,8 @@ letterCheck2 = tk.IntVar()
 specialCheck = tk.IntVar()
 spaceCheck = tk.IntVar()
 easyCheck = tk.IntVar()
+if settingsCFG.easypassword == 1:
+    easyCheck.set(1)
 numberCheck.set(1)
 letterCheck.set(1)
 letterCheck2.set(1)
