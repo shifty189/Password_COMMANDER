@@ -8,7 +8,7 @@ import messagebox
 
 VERSION = '0.11'
 EDITDATE = '8/7/2024'
-minimumClassVersion = '0.10'
+minimumClassVersion = '0.11'
 
 # Class version check
 if float(minimumClassVersion) > float(Class.VERSION):
