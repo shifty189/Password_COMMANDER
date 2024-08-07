@@ -6,7 +6,7 @@ import pickle
 import messagebox
 
 
-VERSION = '0.10'
+VERSION = '0.11'
 EDITDATE = '8/7/2024'
 minimumClassVersion = '0.10'
 
@@ -100,7 +100,7 @@ wordControlFrame.grid(row=1, column=0)
 settingsFrame.grid(row=0, column=1)
 
 # word frame to display selection
-wordsText = tk.Text(wordFrame, height=10, width=20)
+wordsText = tk.Text(wordFrame, height=10, width=25)
 wordsText.pack()
 
 # control frame for buttons
