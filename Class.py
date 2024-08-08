@@ -1,11 +1,11 @@
 import random
 
-VERSION = '0.11'
+VERSION = '0.12'
 EDITDATE = '8/7/2024'
 
 
 class PasswordConfig:
-    def __init__(self, len=15, num=True, let=True, upper=True, spec=True, space=False, easy=True):
+    def __init__(self, len=15, num=True, let=True, upper=True, spec=True, space=False, easy=True, ListCount=10):
         self.length = len
         self.number = num
         self.letter = let
@@ -13,6 +13,7 @@ class PasswordConfig:
         self.special = spec
         self.space = space
         self.easypassword = easy
+        self.listCount = ListCount
         self.speciallist = ['!', '@', '#', '$', '%', '^', '&', '*', '+']
         self.letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
                         't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -30,8 +31,8 @@ class PasswordConfig:
                 options.append('upper')
             if self.special:
                 options.append('special')
-            if self.space:
-                options.append('space')
+            # if self.space:
+            #     options.append('space')
             tempLength = int(self.length)
             while tempLength > 0:
                 pick = random.choice(options)
@@ -45,7 +46,7 @@ class PasswordConfig:
                 if pick == 'special':
                     password = password + random.choice(self.speciallist)
                 if pick == 'space':
-                    password = password + ' '
+                    password = password + " "
                 tempLength -= 1
         else:
             with open('words.txt', 'r') as file:
