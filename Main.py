@@ -8,11 +8,21 @@ import messagebox
 
 VERSION = '0.11'
 EDITDATE = '8/7/2024'
-minimumClassVersion = '0.11'
+minimumClassVersion = '0.12'
 
 # Class version check
 if float(minimumClassVersion) > float(Class.VERSION):
     raise ValueError('Class file version is to old, update Class.py')
+
+
+def updateConfig():
+    global settingsCFG, lengthVar, numberCheck, letterCheck, letterCheck2
+    global specialCheck, spaceCheck, easyCheck
+    settingsCFG = Class.PasswordConfig(lengthVar.get(),numberCheck.get(),
+                                       letterCheck.get(), letterCheck2.get(),
+                                       specialCheck.get(), spaceCheck.get(),
+                                       easyCheck.get())
+    getWords(settingsCFG)
 
 
 def saveConfig(lenT, number, letter, up, speciel, Wspace, Easy):
@@ -62,6 +72,7 @@ else:
         os.makedirs(f'{docs}\\Templates')
 
 Main = tk.Tk()
+Main.title('Password Commander')
 wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
@@ -100,15 +111,17 @@ wordControlFrame.grid(row=1, column=0)
 settingsFrame.grid(row=0, column=1)
 
 # word frame to display selection
-wordsText = tk.Text(wordFrame, height=10, width=25)
-wordsText.pack()
+# refreshButten = tk.Button(wordFrame, text='Update', command=updateConfig)
+# refreshButten.grid(row=0, column=0)
+wordsText = tk.Text(wordFrame, height=10, width=70)
+wordsText.grid(row=0, column=1)
 
 # control frame for buttons
 # newButton = tk.Button(wordControlFrame, text='New', command=lambda: ...)
 # newButton.grid(row=0, column=0)
 # clipButton = tk.Button(wordControlFrame, text='Copy', command=lambda: ...)
 # clipButton.grid(row=0, column=1)
-moreWordsButton = tk.Button(wordControlFrame, text='New Words', command=lambda: getWords(settingsCFG))
+moreWordsButton = tk.Button(wordControlFrame, text='New Words', command=updateConfig)
 moreWordsButton.grid(row=1, column=0)
 
 # settings frame
@@ -144,13 +157,13 @@ specialButton = tk.Checkbutton(settingsFrame, text='Special Characters',
                                offvalue=2,
                                padx=7)
 specialButton.pack()
-spaceButton = tk.Checkbutton(settingsFrame, text='space',
-                             variable=spaceCheck,
-                             onvalue=1,
-                             offvalue=2,
-                             padx=3)
-spaceButton.pack()
-# print(spaceCheck.get())
+# spaceButton = tk.Checkbutton(settingsFrame, text='space',
+#                              variable=spaceCheck,
+#                              onvalue=1,
+#                              offvalue=2,
+#                              padx=3)
+# spaceButton.pack()
+
 saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(lengthVar.get(), numberCheck.get(),
                                                                               letterCheck.get(), letterCheck2.get(),
                                                                               specialCheck.get(), spaceCheck.get(),
