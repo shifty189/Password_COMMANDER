@@ -6,34 +6,45 @@ import pickle
 import messagebox
 
 
-VERSION = '0.11'
+VERSION = '0.13'
 EDITDATE = '8/7/2024'
-minimumClassVersion = '0.12'
+minimumClassVersion = '0.13'
 
 # Class version check
 if float(minimumClassVersion) > float(Class.VERSION):
     raise ValueError('Class file version is to old, update Class.py')
 
 
-def updateConfig():
+def updateconfig():
+    """
+    this function is used to make a new config with up-to-date information from the checkboxes. used to update
+    the config before refreshing the interface without saving the config
+    """
     global settingsCFG, lengthVar, numberCheck, letterCheck, letterCheck2
     global specialCheck, spaceCheck, easyCheck
-    settingsCFG = Class.PasswordConfig(lengthVar.get(),numberCheck.get(),
+    settingsCFG = Class.PasswordConfig(lengthVar.get(), numberCheck.get(),
                                        letterCheck.get(), letterCheck2.get(),
                                        specialCheck.get(), spaceCheck.get(),
                                        easyCheck.get())
     getWords(settingsCFG)
 
 
-def saveConfig(lenT, number, letter, up, speciel, Wspace, Easy):
+def saveconfig(lent, number, letter, up, speciel, wspace, easy):
+    """
+    used the commit the current user input to hard drive
+    """
     global docs
-    newConfig = Class.PasswordConfig(len=lenT, num=number, let=letter, upper=up, spec=speciel, space=Wspace, easy=Easy)
+    newConfig = Class.PasswordConfig(len=lent, num=number, let=letter, upper=up, spec=speciel, space=wspace, easy=easy)
     with open(f'{docs}\\default.cfg', 'wb') as cfgfile:
         pickle.dump(newConfig, cfgfile)
     messagebox.showinfo(title='saved', message='config saved')
 
 
 def getWords(config):
+    """
+    this function is used to get a list of 5 words from the config's generatePassword function and insert them into a
+    tkinter Text widget used for display to the user
+    """
     global wordsText
     wordsText.delete('1.0', tk.END)
     Words = []
@@ -42,7 +53,7 @@ def getWords(config):
         Words.append(config.generatePassword())
         temp -= 1
     for i, word in enumerate(Words):
-        wordsText.insert(f'{i}.4', word + "\n")
+        wordsText.insert(tk.END, word + "\n")
 
 
 docs = f'{os.path.expanduser("~")}\\Documents\\PasswordCommander'
@@ -50,26 +61,23 @@ firstTime = True
 if os.path.exists(docs):
     firstTime = False
     try:
-        cfgfile = open(f'{docs}\\default.cfg', 'rb')
-        settingsCFG = pickle.load(cfgfile)
+        with open(f'{docs}\\default.cfg', 'rb') as cfgfile:
+            settingsCFG = pickle.load(cfgfile)
     except FileNotFoundError:
         print('loading file error')
-        # settingsCFG = Class.PasswordConfig()
-        # cfgfile = open(f'{docs}\\default.cfg', 'ab')
-        # pickle.dump(settingsCFG, cfgfile)
+        settingsCFG = Class.PasswordConfig()
 
-    cfgfile.close()
     firstTime = False
-    if not os.path.exists(f'{docs}\\Templates'):
-        os.makedirs(f'{docs}\\Templates')
+    # if not os.path.exists(f'{docs}\\Templates'):
+    #     os.makedirs(f'{docs}\\Templates')
 else:
     os.makedirs(docs)
     settingsCFG = Class.PasswordConfig()
     with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
         pickle.dump(settingsCFG, cfgfile)
     firstTime = True
-    if not os.path.exists(f'{docs}\\Templates'):
-        os.makedirs(f'{docs}\\Templates')
+    # if not os.path.exists(f'{docs}\\Templates'):
+    #     os.makedirs(f'{docs}\\Templates')
 
 Main = tk.Tk()
 Main.title('Password Commander')
@@ -94,7 +102,7 @@ spaceCheck.set(0)
 lowestMinLength = 5
 
 options = []
-temp = 50
+temp = 45
 while temp >= lowestMinLength:
     options.append(str(temp))
     temp -= 1
@@ -111,9 +119,7 @@ wordControlFrame.grid(row=1, column=0)
 settingsFrame.grid(row=0, column=1)
 
 # word frame to display selection
-# refreshButten = tk.Button(wordFrame, text='Update', command=updateConfig)
-# refreshButten.grid(row=0, column=0)
-wordsText = tk.Text(wordFrame, height=10, width=70)
+wordsText = tk.Text(wordFrame, height=10, width=50)
 wordsText.grid(row=0, column=1)
 
 # control frame for buttons
@@ -121,7 +127,7 @@ wordsText.grid(row=0, column=1)
 # newButton.grid(row=0, column=0)
 # clipButton = tk.Button(wordControlFrame, text='Copy', command=lambda: ...)
 # clipButton.grid(row=0, column=1)
-moreWordsButton = tk.Button(wordControlFrame, text='New Words', command=updateConfig)
+moreWordsButton = tk.Button(wordControlFrame, text='New Words', command=updateconfig)
 moreWordsButton.grid(row=1, column=0)
 
 # settings frame
@@ -154,7 +160,7 @@ letterButton2.pack()
 specialButton = tk.Checkbutton(settingsFrame, text='Special Characters',
                                variable=specialCheck,
                                onvalue=1,
-                               offvalue=2,
+                               offvalue=0,
                                padx=7)
 specialButton.pack()
 # spaceButton = tk.Checkbutton(settingsFrame, text='space',
@@ -164,7 +170,7 @@ specialButton.pack()
 #                              padx=3)
 # spaceButton.pack()
 
-saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(lengthVar.get(), numberCheck.get(),
+saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveconfig(lengthVar.get(), numberCheck.get(),
                                                                               letterCheck.get(), letterCheck2.get(),
                                                                               specialCheck.get(), spaceCheck.get(),
                                                                               easyCheck.get()
@@ -173,12 +179,5 @@ saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveConfig(le
 saveButton.pack()
 
 getWords(settingsCFG)
-# Words = []
-# temp = 5
-# while temp > 0:
-#     Words.append(settingsCFG.generatePassword())
-#     temp -= 1
-# for i, word in enumerate(Words):
-#     wordsText.insert(f'{i}.4', word + "\n")
 
 tk.mainloop()
