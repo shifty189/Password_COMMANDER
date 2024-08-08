@@ -1,5 +1,4 @@
 import tkinter as tk
-
 import Class
 import os
 import pickle
@@ -84,6 +83,7 @@ Main.title('Password Commander')
 wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
+editFrame = tk.Frame(Main)
 
 
 numberCheck = tk.IntVar()
@@ -117,6 +117,7 @@ spaceCheck.set(settingsCFG.space)
 wordFrame.grid(row=0, column=0)
 wordControlFrame.grid(row=1, column=0)
 settingsFrame.grid(row=0, column=1)
+editFrame.grid(row=0, column=2)
 
 # word frame to display selection
 wordsText = tk.Text(wordFrame, height=10, width=50)
@@ -177,6 +178,10 @@ saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveconfig(le
                                                                               )
                        )
 saveButton.pack()
+
+#Edit frame
+editSpecialButton = tk.Button(editFrame, text='Edit Special', command=...)
+editSpecialButton.pack()
 
 getWords(settingsCFG)
 
