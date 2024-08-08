@@ -5,13 +5,40 @@ import pickle
 import messagebox
 
 
-VERSION = '0.13'
-EDITDATE = '8/7/2024'
+VERSION = '0.14'
+EDITDATE = '8/8/2024'
 minimumClassVersion = '0.13'
 
 # Class version check
 if float(minimumClassVersion) > float(Class.VERSION):
     raise ValueError('Class file version is to old, update Class.py')
+
+
+def saveSpecial(config, string, window):
+    window.destroy()
+    temp = string.split(',')
+    config.speciallist = temp
+
+
+
+def editSpecial(config):
+    global Main
+    specialWindow = tk.Toplevel(Main)
+    tempList = ' '
+    for i, c in enumerate(config.speciallist):
+        if i == 0:
+            tempList = c
+        else:
+            tempList = tempList + f",{c}"
+    listText = tk.Label(specialWindow, text='below is all the special characters')
+    listText.grid(row=0, column=0)
+    listChar = tk.Entry(specialWindow)
+    listChar.insert(0, tempList)
+    listChar.grid(row=1, column=0)
+    explainText = tk.Label(specialWindow, text='you may edit this comma seperated list')
+    explainText.grid(row=2, column=0)
+    saveChar = tk.Button(specialWindow, text='save', command=lambda: saveSpecial(config, listChar.get(), specialWindow))
+    saveChar.grid(row=3, column=0)
 
 
 def updateconfig():
@@ -185,7 +212,7 @@ TODO
 add a function for this button. it will make a new window and list all the special characters in a text widget 
 (of some sort).it will allow the user to edit this comma separated list and update the config file. maybe 2 functions ;)
 """
-editSpecialButton = tk.Button(editFrame, text='Edit Special', command=...)
+editSpecialButton = tk.Button(editFrame, text='Edit Special', command=lambda: editSpecial(settingsCFG))
 editSpecialButton.pack()
 
 getWords(settingsCFG)
