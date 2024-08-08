@@ -1,6 +1,6 @@
 import random
 
-VERSION = '0.12'
+VERSION = '0.13'
 EDITDATE = '8/7/2024'
 
 
@@ -41,8 +41,8 @@ class PasswordConfig:
                 if pick == 'letter':
                     password = password + random.choice(self.letters)
                 if pick == 'upper':
-                    let = random.choice(self.letters)
-                    password = password + let
+                    letter = random.choice(self.letters)
+                    password = password + letter.upper()
                 if pick == 'special':
                     password = password + random.choice(self.speciallist)
                 if pick == 'space':
