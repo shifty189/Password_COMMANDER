@@ -180,6 +180,11 @@ saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveconfig(le
 saveButton.pack()
 
 #Edit frame
+"""
+TODO
+add a function for this button. it will make a new window and list all the special characters in a text widget 
+(of some sort).it will allow the user to edit this comma separated list and update the config file. maybe 2 functions ;)
+"""
 editSpecialButton = tk.Button(editFrame, text='Edit Special', command=...)
 editSpecialButton.pack()
 
