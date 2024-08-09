@@ -5,7 +5,7 @@ import pickle
 import messagebox
 
 
-VERSION = '0.16'
+VERSION = '0.17'
 EDITDATE = '8/9/2024'
 minimumClassVersion = '0.13'
 
@@ -14,11 +14,28 @@ if float(minimumClassVersion) > float(Class.VERSION):
     raise ValueError('Class file version is to old, update Class.py')
 
 
+def updateChecks():
+    global settingsCFG, lengthVar, numberCheck, letterCheck, letterCheck2
+    global specialCheck, spaceCheck, easyCheck
+    lengthVar.set(settingsCFG.length)
+    numberCheck.set(settingsCFG.number)
+    letterCheck.set(settingsCFG.letter)
+    letterCheck2.set(settingsCFG.upper)
+    specialCheck.set(settingsCFG.special)
+    easyCheck.set(settingsCFG.easypassword)
+
+
+def defaultConfig():
+    global settingsCFG
+    settingsCFG = Class.PasswordConfig()
+    updateChecks()
+    getWords(settingsCFG)
+
+
 def saveSpecial(config, string, window):
     window.destroy()
     temp = string.split(',')
     config.speciallist = temp
-
 
 
 def editSpecial(config):
@@ -213,11 +230,8 @@ saveButton = tk.Button(settingsFrame, text='Save', command=saveconfig
 saveButton.pack()
 
 #Edit frame
-"""
-TODO
-add a function for this button. it will make a new window and list all the special characters in a text widget 
-(of some sort).it will allow the user to edit this comma separated list and update the config file. maybe 2 functions ;)
-"""
+defaultConfigButton = tk.Button(editFrame, text='Default', command=defaultConfig)
+defaultConfigButton.pack()
 editSpecialButton = tk.Button(editFrame, text='Edit Special', command=lambda: editSpecial(settingsCFG))
 editSpecialButton.pack()
 
