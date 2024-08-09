@@ -5,8 +5,8 @@ import pickle
 import messagebox
 
 
-VERSION = '0.14'
-EDITDATE = '8/8/2024'
+VERSION = '0.15'
+EDITDATE = '8/9/2024'
 minimumClassVersion = '0.13'
 
 # Class version check
@@ -48,10 +48,14 @@ def updateconfig():
     """
     global settingsCFG, lengthVar, numberCheck, letterCheck, letterCheck2
     global specialCheck, spaceCheck, easyCheck
-    settingsCFG = Class.PasswordConfig(lengthVar.get(), numberCheck.get(),
-                                       letterCheck.get(), letterCheck2.get(),
-                                       specialCheck.get(), spaceCheck.get(),
-                                       easyCheck.get())
+
+    settingsCFG.length = lengthVar.get()
+    settingsCFG.number = numberCheck.get()
+    settingsCFG.letter = letterCheck.get()
+    settingsCFG.upper = letterCheck2.get()
+    settingsCFG.special = specialCheck.get()
+    settingsCFG.easypassword = easyCheck.get()
+
     getWords(settingsCFG)
 
 
@@ -59,10 +63,16 @@ def saveconfig(lent, number, letter, up, speciel, wspace, easy):
     """
     used the commit the current user input to hard drive
     """
-    global docs
-    newConfig = Class.PasswordConfig(len=lent, num=number, let=letter, upper=up, spec=speciel, space=wspace, easy=easy)
+    global settingsCFG, lengthVar, numberCheck, letterCheck, letterCheck2
+    global specialCheck, spaceCheck, easyCheck, docs
+    settingsCFG.length = lengthVar.get()
+    settingsCFG.number = numberCheck.get()
+    settingsCFG.letter = letterCheck.get()
+    settingsCFG.upper = letterCheck2.get()
+    settingsCFG.special = specialCheck.get()
+    settingsCFG.easypassword = easyCheck.get()
     with open(f'{docs}\\default.cfg', 'wb') as cfgfile:
-        pickle.dump(newConfig, cfgfile)
+        pickle.dump(settingsCFG, cfgfile)
     messagebox.showinfo(title='saved', message='config saved')
 
 
