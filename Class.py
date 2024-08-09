@@ -1,11 +1,11 @@
 import random
 
-VERSION = '0.13'
+VERSION = '0.14'
 EDITDATE = '8/7/2024'
 
 
 class PasswordConfig:
-    def __init__(self, len=15, num=True, let=True, upper=True, spec=True, space=False, easy=True, ListCount=10):
+    def __init__(self, len=15, num=True, let=True, upper=True, spec=True, space=False, easy=False, ListCount=10):
         self.length = len
         self.number = num
         self.letter = let
