@@ -5,7 +5,7 @@ import pickle
 import messagebox
 
 
-VERSION = '0.15'
+VERSION = '0.16'
 EDITDATE = '8/9/2024'
 minimumClassVersion = '0.13'
 
@@ -59,7 +59,7 @@ def updateconfig():
     getWords(settingsCFG)
 
 
-def saveconfig(lent, number, letter, up, speciel, wspace, easy):
+def saveconfig():
     """
     used the commit the current user input to hard drive
     """
@@ -208,11 +208,7 @@ specialButton.pack()
 #                              padx=3)
 # spaceButton.pack()
 
-saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveconfig(lengthVar.get(), numberCheck.get(),
-                                                                              letterCheck.get(), letterCheck2.get(),
-                                                                              specialCheck.get(), spaceCheck.get(),
-                                                                              easyCheck.get()
-                                                                              )
+saveButton = tk.Button(settingsFrame, text='Save', command=saveconfig
                        )
 saveButton.pack()
 
