@@ -5,7 +5,7 @@ import pickle
 import messagebox
 
 
-VERSION = '0.17'
+VERSION = '0.18'
 EDITDATE = '8/9/2024'
 minimumClassVersion = '0.13'
 
@@ -41,6 +41,7 @@ def saveSpecial(config, string, window):
 def editSpecial(config):
     global Main
     specialWindow = tk.Toplevel(Main)
+    specialWindow.iconbitmap('commander.ico')
     tempList = ' '
     for i, c in enumerate(config.speciallist):
         if i == 0:
@@ -134,6 +135,7 @@ else:
 
 Main = tk.Tk()
 Main.title('Password Commander')
+Main.iconbitmap('commander.ico')
 wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
