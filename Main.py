@@ -1,18 +1,44 @@
 import tkinter as tk
-
 import Class
 import os
 import pickle
 import messagebox
 
 
-VERSION = '0.13'
-EDITDATE = '8/7/2024'
+VERSION = '0.15'
+EDITDATE = '8/9/2024'
 minimumClassVersion = '0.13'
 
 # Class version check
 if float(minimumClassVersion) > float(Class.VERSION):
     raise ValueError('Class file version is to old, update Class.py')
+
+
+def saveSpecial(config, string, window):
+    window.destroy()
+    temp = string.split(',')
+    config.speciallist = temp
+
+
+
+def editSpecial(config):
+    global Main
+    specialWindow = tk.Toplevel(Main)
+    tempList = ' '
+    for i, c in enumerate(config.speciallist):
+        if i == 0:
+            tempList = c
+        else:
+            tempList = tempList + f",{c}"
+    listText = tk.Label(specialWindow, text='below is all the special characters')
+    listText.grid(row=0, column=0)
+    listChar = tk.Entry(specialWindow)
+    listChar.insert(0, tempList)
+    listChar.grid(row=1, column=0)
+    explainText = tk.Label(specialWindow, text='you may edit this comma seperated list')
+    explainText.grid(row=2, column=0)
+    saveChar = tk.Button(specialWindow, text='save', command=lambda: saveSpecial(config, listChar.get(), specialWindow))
+    saveChar.grid(row=3, column=0)
 
 
 def updateconfig():
@@ -22,10 +48,14 @@ def updateconfig():
     """
     global settingsCFG, lengthVar, numberCheck, letterCheck, letterCheck2
     global specialCheck, spaceCheck, easyCheck
-    settingsCFG = Class.PasswordConfig(lengthVar.get(), numberCheck.get(),
-                                       letterCheck.get(), letterCheck2.get(),
-                                       specialCheck.get(), spaceCheck.get(),
-                                       easyCheck.get())
+
+    settingsCFG.length = lengthVar.get()
+    settingsCFG.number = numberCheck.get()
+    settingsCFG.letter = letterCheck.get()
+    settingsCFG.upper = letterCheck2.get()
+    settingsCFG.special = specialCheck.get()
+    settingsCFG.easypassword = easyCheck.get()
+
     getWords(settingsCFG)
 
 
@@ -33,10 +63,16 @@ def saveconfig(lent, number, letter, up, speciel, wspace, easy):
     """
     used the commit the current user input to hard drive
     """
-    global docs
-    newConfig = Class.PasswordConfig(len=lent, num=number, let=letter, upper=up, spec=speciel, space=wspace, easy=easy)
+    global settingsCFG, lengthVar, numberCheck, letterCheck, letterCheck2
+    global specialCheck, spaceCheck, easyCheck, docs
+    settingsCFG.length = lengthVar.get()
+    settingsCFG.number = numberCheck.get()
+    settingsCFG.letter = letterCheck.get()
+    settingsCFG.upper = letterCheck2.get()
+    settingsCFG.special = specialCheck.get()
+    settingsCFG.easypassword = easyCheck.get()
     with open(f'{docs}\\default.cfg', 'wb') as cfgfile:
-        pickle.dump(newConfig, cfgfile)
+        pickle.dump(settingsCFG, cfgfile)
     messagebox.showinfo(title='saved', message='config saved')
 
 
@@ -84,6 +120,7 @@ Main.title('Password Commander')
 wordFrame = tk.Frame(Main)
 wordControlFrame = tk.Frame(Main)
 settingsFrame = tk.Frame(Main)
+editFrame = tk.Frame(Main)
 
 
 numberCheck = tk.IntVar()
@@ -117,6 +154,7 @@ spaceCheck.set(settingsCFG.space)
 wordFrame.grid(row=0, column=0)
 wordControlFrame.grid(row=1, column=0)
 settingsFrame.grid(row=0, column=1)
+editFrame.grid(row=0, column=2)
 
 # word frame to display selection
 wordsText = tk.Text(wordFrame, height=10, width=50)
@@ -177,6 +215,15 @@ saveButton = tk.Button(settingsFrame, text='Save', command=lambda: saveconfig(le
                                                                               )
                        )
 saveButton.pack()
+
+#Edit frame
+"""
+TODO
+add a function for this button. it will make a new window and list all the special characters in a text widget 
+(of some sort).it will allow the user to edit this comma separated list and update the config file. maybe 2 functions ;)
+"""
+editSpecialButton = tk.Button(editFrame, text='Edit Special', command=lambda: editSpecial(settingsCFG))
+editSpecialButton.pack()
 
 getWords(settingsCFG)
 
