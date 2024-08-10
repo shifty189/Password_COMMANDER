@@ -5,8 +5,8 @@ import pickle
 import messagebox
 
 
-VERSION = '0.18'
-EDITDATE = '8/9/2024'
+VERSION = '0.19'
+EDITDATE = '8/10/2024'
 minimumClassVersion = '0.13'
 
 # Class version check
@@ -15,6 +15,9 @@ if float(minimumClassVersion) > float(Class.VERSION):
 
 
 def updateChecks():
+    """
+    this function is used to update the GUI from the loaded config object
+    """
     global settingsCFG, lengthVar, numberCheck, letterCheck, letterCheck2
     global specialCheck, spaceCheck, easyCheck
     lengthVar.set(settingsCFG.length)
@@ -26,6 +29,9 @@ def updateChecks():
 
 
 def defaultConfig():
+    """
+    this function creates a new config from default settings then runs updateCheck to update the GUI
+    """
     global settingsCFG
     settingsCFG = Class.PasswordConfig()
     updateChecks()
@@ -33,12 +39,20 @@ def defaultConfig():
 
 
 def saveSpecial(config, string, window):
+    """
+    this function updates the loaded config's allowed special charector list with the user input from editSpecial
+    function, and destorys that window.
+    """
     window.destroy()
-    temp = string.split(',')
-    config.speciallist = temp
+    templist = string.split(',')
+    config.speciallist = templist
 
 
 def editSpecial(config):
+    """
+    this function creates a new window and allows the user to input a comma seperated string to change the loaded
+    config's allowed special charector list
+    """
     global Main
     specialWindow = tk.Toplevel(Main)
     specialWindow.iconbitmap('commander.ico')
@@ -122,16 +136,13 @@ if os.path.exists(docs):
         settingsCFG = Class.PasswordConfig()
 
     firstTime = False
-    # if not os.path.exists(f'{docs}\\Templates'):
-    #     os.makedirs(f'{docs}\\Templates')
 else:
     os.makedirs(docs)
     settingsCFG = Class.PasswordConfig()
     with open(f'{docs}\\default.cfg', 'ab') as cfgfile:
         pickle.dump(settingsCFG, cfgfile)
     firstTime = True
-    # if not os.path.exists(f'{docs}\\Templates'):
-    #     os.makedirs(f'{docs}\\Templates')
+
 
 Main = tk.Tk()
 Main.title('Password Commander')
@@ -180,10 +191,6 @@ wordsText = tk.Text(wordFrame, height=10, width=50)
 wordsText.grid(row=0, column=1)
 
 # control frame for buttons
-# newButton = tk.Button(wordControlFrame, text='New', command=lambda: ...)
-# newButton.grid(row=0, column=0)
-# clipButton = tk.Button(wordControlFrame, text='Copy', command=lambda: ...)
-# clipButton.grid(row=0, column=1)
 moreWordsButton = tk.Button(wordControlFrame, text='New Words', command=updateconfig)
 moreWordsButton.grid(row=1, column=0)
 
@@ -220,18 +227,11 @@ specialButton = tk.Checkbutton(settingsFrame, text='Special Characters',
                                offvalue=0,
                                padx=7)
 specialButton.pack()
-# spaceButton = tk.Checkbutton(settingsFrame, text='space',
-#                              variable=spaceCheck,
-#                              onvalue=1,
-#                              offvalue=2,
-#                              padx=3)
-# spaceButton.pack()
 
-saveButton = tk.Button(settingsFrame, text='Save', command=saveconfig
-                       )
+saveButton = tk.Button(settingsFrame, text='Save', command=saveconfig)
 saveButton.pack()
 
-#Edit frame
+# Edit frame
 defaultConfigButton = tk.Button(editFrame, text='Default', command=defaultConfig)
 defaultConfigButton.pack()
 editSpecialButton = tk.Button(editFrame, text='Edit Special', command=lambda: editSpecial(settingsCFG))
